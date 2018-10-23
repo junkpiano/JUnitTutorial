@@ -22,17 +22,11 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-                gradlew("javadoc")
-            }
+    }
 
-            post {
-                always {
-                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'build/docs/javadoc', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
-                }
-            }
+    post {
+        always {
+            deleteDir()
         }
     }
 }
