@@ -7,17 +7,35 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
+                gradlew('assemble')
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing..'
+                gradlew('test')
+            }
+
+            post {
+                always {
+                    junit allowEmptyResults: true, testResults: 'build/test-results/test/*.xml'
+                }
             }
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
+    }
+
+    post {
+        always {
+            deleteDir()
         }
+    }
+}
+
+// execute Gradlew
+def gradlew(command) {
+    if(isUnix()) {
+        sh "./gradlew ${command} --stacktrace"
+    } else {
+        bat "./gradlew.bat ${command} --stacktrace"
     }
 }
