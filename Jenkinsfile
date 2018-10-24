@@ -23,6 +23,11 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            deleteDir()
+        }
+    }
 }
 
 // execute Gradlew
